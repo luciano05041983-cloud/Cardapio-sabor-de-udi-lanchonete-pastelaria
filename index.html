@@ -1,0 +1,2144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Cardápio - Sabor de Udi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET E VARIÁVEIS ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --yellow: #FFC50A;
+            --black: #000000;
+            --white: #FFFFFF;
+            --orange: #FF7300;
+            --cream-bg: #FFFDF5;
+            --shadow: 0 8px 24px rgba(0,0,0,0.08);
+            --radius-card: 16px;
+            --green: #25D366;
+            --red: #E74C3C;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cream-bg);
+            color: var(--black);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 16px 12px 90px;
+            position: relative;
+        }
+        .app-container {
+            max-width: 480px;
+            width: 100%;
+            background-color: var(--cream-bg);
+            border-radius: 32px;
+            overflow: visible;
+            position: relative;
+        }
+
+        /* ===== HEADER ===== */
+        .hero-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0 10px;
+            margin-bottom: 8px;
+        }
+        .logo-circle {
+            width: 176px;
+            height: 176px;
+            border-radius: 50%;
+            background-color: var(--yellow);
+            border: 6px solid var(--white);
+            box-shadow: 0 8px 30px rgba(255,197,10,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.1;
+            padding: 0 6px;
+            position: relative;
+            transition: transform 0.2s ease;
+        }
+        .logo-circle:hover { transform: scale(1.02); }
+        .logo-line-1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0px;
+        }
+        .logo-line-1 .sab { color: var(--black); }
+        .logo-line-1 .o-letter {
+            color: var(--black);
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-line-1 .flame {
+            position: absolute;
+            font-size: 1.0rem;
+            bottom: 2px;
+            right: -4px;
+            transform: rotate(10deg);
+            filter: drop-shadow(0 2px 2px rgba(255,115,0,0.5));
+            line-height: 1;
+            pointer-events: none;
+        }
+        .logo-line-1 .r { color: var(--black); }
+        .logo-line-2 {
+            font-size: 1.0rem;
+            font-weight: 700;
+            color: var(--orange);
+            letter-spacing: 3px;
+            margin-top: -6px;
+            margin-bottom: -4px;
+        }
+        .logo-line-3 {
+            font-size: 2.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+            letter-spacing: 2px;
+        }
+        .logo-sub {
+            font-size: 0.6rem;
+            font-weight: 400;
+            color: rgba(0,0,0,0.6);
+            letter-spacing: 2px;
+            margin-top: 2px;
+            background: rgba(255,255,255,0.3);
+            padding: 0 10px;
+            border-radius: 20px;
+        }
+
+        /* ===== BARRA DE PESQUISA ===== */
+        .search-container {
+            padding: 0 4px 12px;
+            width: 100%;
+        }
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            background: var(--white);
+            border-radius: 50px;
+            padding: 0 18px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--orange);
+            transition: border-color 0.2s;
+        }
+        .search-wrapper:focus-within {
+            border-color: var(--yellow);
+        }
+        .search-wrapper .search-icon {
+            font-size: 1.2rem;
+            color: var(--orange);
+            margin-right: 10px;
+        }
+        .search-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            padding: 12px 0;
+            background: transparent;
+            color: var(--black);
+            min-width: 0;
+        }
+        .search-wrapper input::placeholder {
+            color: #aaa;
+            font-weight: 400;
+        }
+        .search-wrapper .clear-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #ccc;
+            cursor: pointer;
+            padding: 0 4px;
+            display: none;
+        }
+        .search-wrapper .clear-btn.visible {
+            display: block;
+        }
+        .search-wrapper .clear-btn:hover {
+            color: var(--red);
+        }
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px 10px;
+            color: #888;
+            font-size: 0.95rem;
+            background: var(--white);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow);
+        }
+        .no-results strong {
+            color: var(--orange);
+        }
+
+        /* ===== BARRA DE MENU FIXA ===== */
+        .categories-fixed {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--cream-bg);
+            padding: 8px 12px 12px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: center;
+            border-top: 2px solid var(--orange);
+        }
+        .categories-fixed .categories-scroll {
+            max-width: 480px;
+            width: 100%;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 4px 0 8px 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--orange) transparent;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+        }
+        .categories-fixed .categories-scroll::-webkit-scrollbar { height: 4px; }
+        .categories-fixed .categories-scroll::-webkit-scrollbar-thumb {
+            background-color: var(--orange);
+            border-radius: 10px;
+        }
+        .categories-fixed .categories-scroll::-webkit-scrollbar-track { background: transparent; }
+        .category-tab {
+            flex: 0 0 auto;
+            padding: 8px 16px;
+            background-color: var(--yellow);
+            color: var(--black);
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            scroll-snap-align: start;
+            border: 1px solid transparent;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .category-tab.active {
+            background-color: var(--orange);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(255,115,0,0.3);
+            border-color: var(--white);
+        }
+        .category-tab .emoji { font-size: 1.0rem; line-height: 1; }
+        .category-tab.location-tab {
+            background-color: #2c3e50;
+            color: white;
+        }
+        .category-tab.location-tab:hover {
+            background-color: #1a252f;
+        }
+
+        /* ===== GRADE DE ITENS ===== */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 6px;
+            padding-bottom: 20px;
+        }
+        /* Layout em lista (uma coluna) para seções específicas */
+        .menu-grid.list-layout {
+            grid-template-columns: 1fr;
+        }
+        .menu-grid.list-layout .menu-card {
+            grid-column: 1 / -1;
+        }
+
+        .section-title {
+            grid-column: 1 / -1;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--black);
+            margin: 8px 0 4px 0;
+            padding-bottom: 6px;
+            border-bottom: 3px solid var(--orange);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .section-title .title-emoji { font-size: 1.6rem; }
+        .section-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.7rem;
+            border: none;
+            cursor: default;
+            transition: all 0.3s ease;
+            margin-left: auto;
+            white-space: nowrap;
+        }
+        .section-status-badge.open {
+            background-color: var(--green);
+            color: var(--white);
+            box-shadow: 0 2px 8px rgba(37,211,102,0.3);
+        }
+        .section-status-badge.closed {
+            background-color: var(--red);
+            color: var(--white);
+            box-shadow: 0 2px 8px rgba(231,76,60,0.3);
+        }
+        .section-status-badge .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        .section-status-badge.closed .status-dot { animation: none; }
+        @keyframes pulse-dot {
+            0%,100% { opacity:1; transform:scale(1); }
+            50% { opacity:0.5; transform:scale(0.8); }
+        }
+
+        /* ===== IMAGEM DA SEÇÃO ===== */
+        .section-image {
+            grid-column: 1 / -1;
+            width: 100%;
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 4px;
+        }
+        .section-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            max-height: 200px;
+        }
+
+        /* ===== ANÚNCIO ===== */
+        .ad-space {
+            grid-column: 1 / -1;
+            width: 100%;
+            background: linear-gradient(135deg, var(--orange), var(--yellow));
+            border-radius: var(--radius-card);
+            padding: 0;
+            margin: 12px 0 4px 0;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16 / 4;
+            min-height: 60px;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+        .ad-space:hover { transform: scale(1.01); }
+        .ad-space:active { transform: scale(0.98); }
+        .ad-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            padding: 8px 16px;
+            width: 100%;
+            height: 100%;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .ad-content .ad-title { font-weight:900; font-size:1.0rem; letter-spacing:0.5px; line-height:1.2; }
+        .ad-content .ad-sub { font-weight:600; font-size:0.7rem; opacity:0.95; margin-top:2px; }
+        .ad-content .ad-cta {
+            display: inline-block;
+            margin-top: 4px;
+            background: var(--white);
+            color: var(--orange);
+            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 4px 16px;
+            border-radius: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        /* ===== CARD DE ITEM ===== */
+        .menu-card {
+            background: var(--white);
+            border-radius: var(--radius-card);
+            padding: 16px 12px 14px;
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+            border: 1px solid rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .menu-card:active { transform: scale(0.97); }
+        .menu-card .item-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--black);
+            margin-bottom: 4px;
+            width: 100%;
+            line-height: 1.2;
+        }
+        .menu-card .item-desc {
+            font-size: 0.7rem;
+            color: #555;
+            font-weight: 400;
+            margin-bottom: 10px;
+            opacity: 0.8;
+            width: 100%;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: unset;
+            line-height: 1.3;
+        }
+        .menu-card .item-footer {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4px;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .btn-add {
+            background: none;
+            border: none;
+            background-color: var(--yellow);
+            color: var(--black);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.04);
+            flex-shrink: 0;
+        }
+        .btn-add:hover { background-color: var(--orange); color: var(--white); transform: scale(1.05); }
+        .btn-add:active { transform: scale(0.90); }
+
+        .size-buttons {
+            display: flex;
+            gap: 6px;
+            width: 100%;
+        }
+        .btn-size {
+            flex: 1;
+            border: none;
+            background-color: var(--yellow);
+            color: var(--black);
+            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 6px 4px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            border: 1px solid rgba(0,0,0,0.04);
+            text-align: center;
+            white-space: nowrap;
+        }
+        .btn-size:hover { background-color: var(--orange); color: var(--white); transform: scale(1.03); }
+        .btn-size:active { transform: scale(0.95); }
+        .btn-size .size-label { font-weight:700; font-size:0.75rem; }
+        .btn-size .size-price { display:block; font-weight:600; font-size:0.7rem; opacity:0.9; }
+
+        .item-price-badge {
+            background-color: var(--orange);
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 40px;
+            box-shadow: 0 2px 8px rgba(255,115,0,0.25);
+            white-space: nowrap;
+        }
+
+        /* ===== SEÇÃO LOCALIZAÇÃO ===== */
+        .localizacao-section {
+            grid-column: 1 / -1;
+            margin: 20px 0 10px 0;
+            padding: 18px 16px;
+            background: var(--white);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--orange);
+        }
+        .localizacao-section h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .localizacao-section .endereco-destaque {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--orange);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .localizacao-section .mapa-container {
+            width: 100%;
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            margin-top: 6px;
+        }
+        .localizacao-section .mapa-container iframe {
+            width: 100%;
+            height: 200px;
+            border: 0;
+            display: block;
+        }
+
+        /* ===== IMAGEM EXTRA (FINAL) ===== */
+        .final-image {
+            grid-column: 1 / -1;
+            margin: 10px 0 0;
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        .final-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ===== RODAPÉ ===== */
+        .footer-info {
+            grid-column: 1 / -1;
+            margin-top: 6px;
+            padding: 20px 16px;
+            background: var(--white);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--orange);
+        }
+        .footer-info .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            color: #333;
+        }
+        .footer-info .info-row:last-child { margin-bottom: 0; }
+        .footer-info .info-icon { font-size: 1.1rem; min-width: 24px; text-align: center; }
+        .footer-info .info-text { flex:1; line-height:1.4; }
+        .footer-info .info-text strong { color: var(--black); }
+
+        /* ===== BOTÕES FLUTUANTES ===== */
+        .floating-buttons {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 1000;
+            align-items: flex-end;
+        }
+        .float-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            color: var(--white);
+            position: relative;
+        }
+        .float-btn:active { transform: scale(0.90); }
+        .float-btn.whatsapp { background-color: var(--green); }
+        .float-btn.whatsapp:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(37,211,102,0.4); }
+        .float-btn.share { background-color: #1DA1F2; }
+        .float-btn.share:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(29,161,242,0.4); }
+        .float-btn.cart {
+            background-color: var(--orange);
+            animation: neon-pulse 2s ease-in-out infinite;
+        }
+        @keyframes neon-pulse {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(255,115,0,0.3), 0 0 20px rgba(255,115,0,0.2), 0 0 40px rgba(255,115,0,0.1);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255,115,0,0.8), 0 0 40px rgba(255,115,0,0.5), 0 0 60px rgba(255,115,0,0.3);
+            }
+        }
+        .float-btn.cart:hover {
+            animation: none;
+            transform: scale(1.08);
+            box-shadow: 0 0 30px rgba(255,115,0,0.8), 0 0 60px rgba(255,115,0,0.5);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background-color: var(--red);
+            color: var(--white);
+            font-size: 0.6rem;
+            font-weight: 700;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(231,76,60,0.4);
+            border: 2px solid var(--white);
+            transition: all 0.3s ease;
+        }
+        .cart-badge.hidden { transform: scale(0); opacity: 0; }
+        .cart-badge.show { transform: scale(1); opacity: 1; }
+
+        /* ===== TOAST ===== */
+        .toast-message {
+            position: fixed;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--black);
+            color: var(--white);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+            pointer-events: none;
+            z-index: 999;
+            border-left: 6px solid var(--orange);
+            max-width: 90%;
+            text-align: center;
+        }
+        .toast-message.show { opacity: 1; transform: translateX(-50%) translateY(0px); }
+
+        /* ===== MODAIS ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .modal-overlay.active { display: flex; }
+        #customizeModal { z-index: 2100; }
+        #orderModal { z-index: 2000; }
+        #shareModal { z-index: 2200; }
+
+        .modal {
+            background: var(--white);
+            border-radius: 24px;
+            max-width: 480px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 24px 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 1.8rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #999;
+            transition: 0.2s;
+        }
+        .modal-close:hover { color: var(--black); transform: rotate(90deg); }
+        .modal h2 {
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            color: var(--black);
+            border-bottom: 2px solid var(--orange);
+            padding-bottom: 8px;
+        }
+        .modal .item-summary {
+            background: var(--cream-bg);
+            padding: 10px 14px;
+            border-radius: var(--radius-card);
+            margin-bottom: 16px;
+        }
+        .modal .item-summary strong { font-size: 1.1rem; }
+        .modal .extras-group {
+            margin: 12px 0;
+        }
+        .modal .extras-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: #333;
+        }
+        .modal .extras-group .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 12px;
+            background: var(--cream-bg);
+            padding: 8px 12px;
+            border-radius: var(--radius-card);
+        }
+        .modal .extras-group .checkbox-grid label {
+            font-weight: 400;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .modal .extras-group .checkbox-grid input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--orange);
+        }
+        .modal .btn-primary {
+            background: var(--orange);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 16px;
+            flex: 1;
+        }
+        .modal .btn-primary:hover { background: #e06600; transform: scale(1.02); }
+        .modal .btn-primary:active { transform: scale(0.98); }
+        .modal .btn-secondary {
+            background: transparent;
+            color: var(--orange);
+            border: 2px solid var(--orange);
+            padding: 10px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 16px;
+            flex: 1;
+            text-align: center;
+        }
+        .modal .btn-secondary:hover { background: var(--orange); color: var(--white); }
+        .modal .btn-tertiary {
+            background: transparent;
+            color: #888;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            text-align: center;
+            margin-top: 8px;
+        }
+        .modal .btn-tertiary:hover { background: #f5f5f5; }
+
+        .modal .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .modal .button-group .btn-primary,
+        .modal .button-group .btn-secondary {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        /* ===== MEU PEDIDO - ESTILO MELHORADO ===== */
+        .order-item-card {
+            background: var(--cream-bg);
+            border-radius: var(--radius-card);
+            padding: 12px 14px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--orange);
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .order-item-card:hover { background: #f5f0e8; }
+        .order-item-card .order-number {
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: var(--orange);
+            background: rgba(255,115,0,0.12);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .order-item-card .item-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .order-item-card .item-info .name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--black);
+        }
+        .order-item-card .item-info .price {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--orange);
+            background: rgba(255,115,0,0.1);
+            padding: 0 8px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+        .order-item-card .item-info .details {
+            font-size: 0.7rem;
+            color: #555;
+            margin-top: 2px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 8px;
+        }
+        .order-item-card .item-info .details span {
+            background: rgba(0,0,0,0.04);
+            padding: 1px 8px;
+            border-radius: 12px;
+        }
+        .order-item-card .item-actions {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        .order-item-card .item-actions button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px 6px;
+            transition: 0.2s;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .order-item-card .item-actions button:hover { transform: scale(1.15); background: rgba(0,0,0,0.04); }
+        .order-item-card .item-actions .edit-btn { color: var(--orange); }
+        .order-item-card .item-actions .delete-btn { color: var(--red); }
+
+        .order-total {
+            background: linear-gradient(135deg, var(--orange), #e06600);
+            color: var(--white);
+            padding: 14px 16px;
+            border-radius: var(--radius-card);
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin: 16px 0;
+            box-shadow: 0 4px 12px rgba(255,115,0,0.3);
+        }
+        .order-empty {
+            text-align: center;
+            padding: 30px 0;
+            color: #999;
+            font-size: 1rem;
+        }
+        .order-empty .big-emoji { font-size: 3rem; display: block; margin-bottom: 8px; }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255,115,0,0.2);
+        }
+        .form-group .radio-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .form-group .radio-group label {
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .form-group .radio-group input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--orange);
+        }
+
+        /* ===== MODAL DE COMPARTILHAMENTO ===== */
+        #shareModal .modal {
+            text-align: center;
+        }
+        #shareModal .share-icon-big {
+            font-size: 4rem;
+            margin-bottom: 8px;
+        }
+        #shareModal .share-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--orange);
+            margin-bottom: 8px;
+        }
+        #shareModal .share-text {
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        #shareModal .share-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        #shareModal .share-btn {
+            padding: 14px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        #shareModal .share-btn.copy-btn {
+            background: var(--cream-bg);
+            color: var(--black);
+            border: 2px solid var(--orange);
+        }
+        #shareModal .share-btn.copy-btn:hover {
+            background: var(--orange);
+            color: white;
+        }
+        #shareModal .share-btn.whatsapp-share-btn {
+            background: var(--green);
+            color: white;
+        }
+        #shareModal .share-btn.whatsapp-share-btn:hover {
+            background: #128C7E;
+        }
+        #shareModal .share-btn .btn-icon {
+            font-size: 1.4rem;
+        }
+        #shareModal .share-footer {
+            margin-top: 16px;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 400px) {
+            .logo-circle { width:150px; height:150px; }
+            .logo-line-1 { font-size:2.0rem; }
+            .logo-line-3 { font-size:2.2rem; }
+            .menu-grid { gap:10px; }
+            .menu-card { padding:12px 10px; }
+            .category-tab { padding:6px 12px; font-size:0.7rem; }
+            .btn-size { font-size:0.65rem; padding:4px 2px; }
+            .section-title { font-size:1.2rem; }
+            .float-btn { width:48px; height:48px; font-size:1.3rem; }
+            .cart-badge { width:18px; height:18px; font-size:0.5rem; top:-4px; right:-4px; }
+            .ad-content .ad-title { font-size:0.8rem; }
+            .ad-content .ad-sub { font-size:0.6rem; }
+            .ad-content .ad-cta { font-size:0.6rem; padding:2px 12px; }
+            .floating-buttons { bottom:70px; }
+            .modal .extras-group .checkbox-grid { grid-template-columns:1fr; }
+            .modal .button-group { flex-direction:column; }
+            .order-item-card { flex-wrap: wrap; }
+            .order-item-card .item-actions { margin-left: auto; }
+            .localizacao-section .mapa-container iframe { height:150px; }
+        }
+        @media (min-width: 600px) {
+            .app-container { max-width: 550px; }
+            .menu-grid { grid-template-columns: 1fr 1fr 1fr; }
+            .menu-grid.list-layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="hero-header">
+            <div class="logo-circle">
+                <div class="logo-line-1">
+                    <span class="sab">SAB</span>
+                    <span class="o-letter">O<span class="flame">🔥</span></span>
+                    <span class="r">R</span>
+                </div>
+                <div class="logo-line-2">DE</div>
+                <div class="logo-line-3">UDI</div>
+                <div class="logo-sub">✦ PASTELARIA ✦</div>
+            </div>
+        </header>
+
+        <!-- ===== BARRA DE PESQUISA ===== -->
+        <div class="search-container">
+            <div class="search-wrapper">
+                <span class="search-icon">🔎</span>
+                <input type="text" id="searchInput" placeholder="Busque seu pastel favorito..." autocomplete="off">
+                <button class="clear-btn" id="clearSearchBtn" aria-label="Limpar busca">✕</button>
+            </div>
+        </div>
+
+        <main class="menu-grid" id="menuGrid"></main>
+
+        <!-- ===== SEÇÃO LOCALIZAÇÃO (aparece dentro do grid) ===== -->
+        <div id="localizacao" class="localizacao-section" style="grid-column: 1 / -1;">
+            <h3>📍 Localização</h3>
+            <div class="endereco-destaque">
+                📌 Avenida dos Titos 550, Loja 3
+            </div>
+            <div class="mapa-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15015.250627909887!2d-48.283707!3d-18.920515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94a4452d9c3e9f3b%3A0x8f3b0e1a2b3c4d5e!2sAv.%20dos%20Titos%2C%20550%20-%20Loja%203%2C%20Uberl%C3%A2ndia%20-%20MG!5e0!3m2!1spt-BR!2sbr!4v1650000000000!5m2!1spt-BR!2sbr" 
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+
+        <!-- ===== IMAGEM FINAL (MAPA) ===== -->
+        <div class="final-image" style="grid-column: 1 / -1;">
+            <img src="https://i.ibb.co/SXJcnbVB/Screenshot-20260625-201046-Maps.png" alt="Mapa de localização" loading="lazy">
+        </div>
+
+        <footer class="footer-info" style="grid-column: 1 / -1;">
+            <div class="info-row"><span class="info-icon">📍</span><span class="info-text"><strong>Endereço:</strong> Avenida dos Titos 550, Loja 3</span></div>
+            <div class="info-row"><span class="info-icon">🕐</span><span class="info-text"><strong>Horário de Funcionamento:</strong><br>Segunda a Sexta: 13:00h às 22:00h<br>Sábado: 09:00h às 16:00h<br>Domingo: Fechado</span></div>
+        </footer>
+    </div>
+
+    <!-- ===== BARRA DE MENU FIXA ===== -->
+    <div class="categories-fixed">
+        <div class="categories-scroll" id="categoriesContainer"></div>
+    </div>
+
+    <!-- ===== BOTÕES FLUTUANTES ===== -->
+    <div class="floating-buttons">
+        <button class="float-btn share" id="shareBtn" aria-label="Compartilhar cardápio">🔗</button>
+        <a class="float-btn whatsapp" id="whatsappBtn" href="https://wa.me/5534997801663?text=Olá!%20Gostaria%20de%20fazer%20um%20pedido!" target="_blank" aria-label="WhatsApp">💬</a>
+        <button class="float-btn cart" id="cartBtn" aria-label="Carrinho">🛒<span class="cart-badge hidden" id="cartBadge">0</span></button>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-message" id="toastMessage">✅ Adicionado ao carrinho!</div>
+
+    <!-- ===== MODAL PERSONALIZAÇÃO ===== -->
+    <div class="modal-overlay" id="customizeModal">
+        <div class="modal">
+            <button class="modal-close" id="closeCustomize">&times;</button>
+            <h2 id="customizeTitle">Personalizar</h2>
+            <div class="item-summary" id="customizeSummary"><strong>Item</strong> - <span id="customizeSize"></span></div>
+            
+            <div class="extras-group" id="adicionaisGroup">
+                <label>🧂 Adicionais</label>
+                <div class="checkbox-grid" id="adicionaisCheckboxes"></div>
+            </div>
+            <div class="extras-group" id="bebidasGroup">
+                <label>🥤 Bebidas</label>
+                <div class="checkbox-grid" id="bebidasCheckboxes"></div>
+            </div>
+            <div class="extras-group" id="sucoGroup">
+                <label>🍊 Suco Natural</label>
+                <div class="checkbox-grid" id="sucoCheckboxes"></div>
+            </div>
+            <div class="extras-group" id="vitaminaGroup">
+                <label>🥛 Vitamina</label>
+                <div class="checkbox-grid" id="vitaminaCheckboxes"></div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-secondary" id="backToMenuBtn">Voltar ao cardápio</button>
+                <button class="btn-primary" id="addToOrderBtn">Adicionar pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL MEU PEDIDO (RESUMO) ===== -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal">
+            <button class="modal-close" id="closeOrder">&times;</button>
+            <h2>📋 Meu Pedido</h2>
+            <div id="orderItemsList"></div>
+            <div class="order-total" id="orderTotal">Total: R$ 0,00</div>
+            <div class="form-group">
+                <label for="customerName">Seu nome *</label>
+                <input type="text" id="customerName" placeholder="Digite seu nome" required>
+            </div>
+            <div class="form-group">
+                <label>Forma de pagamento *</label>
+                <div class="radio-group" id="paymentGroup">
+                    <label><input type="radio" name="payment" value="Pix"> Pix</label>
+                    <label><input type="radio" name="payment" value="Cartão"> Cartão de Crédito</label>
+                    <label><input type="radio" name="payment" value="Dinheiro"> Dinheiro</label>
+                </div>
+            </div>
+            <div class="form-group" id="trocoGroup" style="display:none;">
+                <label for="troco">Troco para quanto? *</label>
+                <input type="text" id="troco" placeholder="Ex: R$ 50,00">
+            </div>
+            <div class="form-group">
+                <label>Forma de entrega *</label>
+                <div class="radio-group" id="deliveryGroup">
+                    <label><input type="radio" name="delivery" value="Retirada"> Retirada no balcão</label>
+                    <label><input type="radio" name="delivery" value="Delivery"> Delivery</label>
+                </div>
+            </div>
+            <div class="form-group" id="enderecoGroup" style="display:none;">
+                <label for="endereco">Endereço *</label>
+                <input type="text" id="endereco" placeholder="Rua, número, bairro, complemento">
+            </div>
+
+            <button class="btn-tertiary" id="chooseMoreBtn">🛍️ Escolher mais itens</button>
+            <button class="btn-primary" id="sendOrderBtn">📤 Enviar Pedido</button>
+        </div>
+    </div>
+
+    <!-- ===== MODAL DE COMPARTILHAMENTO ===== -->
+    <div class="modal-overlay" id="shareModal">
+        <div class="modal">
+            <button class="modal-close" id="closeShare">&times;</button>
+            <div class="share-icon-big">🤝</div>
+            <div class="share-title">Compartilhe essa delícia!</div>
+            <div class="share-text">
+                <strong>Seus amigos também merecem experimentar os melhores pastéis da cidade.</strong><br>
+                Mostre o cardápio e venham todos juntos! 😋
+            </div>
+            <div class="share-buttons">
+                <button class="share-btn copy-btn" id="copyLinkBtn">
+                    <span class="btn-icon">📋</span> Copiar link do cardápio
+                </button>
+                <button class="share-btn whatsapp-share-btn" id="shareWhatsappBtn">
+                    <span class="btn-icon">💬</span> Compartilhar via WhatsApp
+                </button>
+            </div>
+            <div class="share-footer">Compartilhe com a família e amigos!</div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ============================================================
+            // 1. DADOS DO CARDÁPIO
+            // ============================================================
+            const menuData = [
+                {
+                    id: 'queijo',
+                    label: 'Pastéis de Queijo',
+                    emoji: '🧀',
+                    image: 'https://i.ibb.co/xKLMn29H/1782268786978-2.jpg',
+                    ad: { text:'Seu negócio aqui!', sub:'Destaque sua marca para milhares de clientes', cta:'Anuncie agora' },
+                    items: [
+                        { name:'Queijo', desc:'Massa crocante com queijo derretido', sizes:{M:8.90, G:15.50} },
+                        { name:'Pizza', desc:'Presunto, muçarela e orégano', sizes:{M:8.90, G:15.50} },
+                        { name:'Calabresa', desc:'Calabresa, muçarela e orégano', sizes:{M:8.90, G:15.50} },
+                        { name:'4 Queijos', desc:'Queijo, muçarela, Catupiry e provolone', sizes:{M:10.50, G:17.50} }
+                    ],
+                    extrasGroups: ['adicionais','bebidas','suco','vitamina']
+                },
+                {
+                    id: 'carne',
+                    label: 'Pastéis de Carne',
+                    emoji: '🥩',
+                    image: 'https://i.ibb.co/cSpmzfvS/file-000000008b34720e918d7901ef8d207e-2.jpg',
+                    layout: 'list',
+                    items: [
+                        { name:'Carne', desc:'Carne moída temperada', sizes:{M:8.50, G:14.50} },
+                        { name:'Carne com Queijo', desc:'Carne moída e muçarela', sizes:{M:8.90, G:15.50} },
+                        { name:'Misto de Carne', desc:'Carne, milho, azeitona e queijo minas', sizes:{M:8.90, G:15.50} },
+                        { name:'Misto de Carne com Guariroba', desc:'Carne, guariroba e temperos', sizes:{M:9.90, G:16.90} },
+                        { name:'Misto de Carne com Palmito', desc:'Carne, palmito e muçarela', sizes:{M:9.90, G:16.50} },
+                        { name:'Misto de Carne com Bacon', desc:'Carne, bacon crocante e muçarela', sizes:{M:9.90, G:16.50} },
+                        { name:'Misto de Carne com Calabresa', desc:'Carne, calabresa e muçarela', sizes:{M:9.90, G:16.50} },
+                        { name:'Misto de Carne com Catupiry', desc:'Carne e catupiry cremoso', sizes:{M:9.90, G:16.50} },
+                        { name:'Misto de Carne com Cheddar', desc:'Carne e cheddar derretido', sizes:{M:9.90, G:16.50} }
+                    ],
+                    extrasGroups: ['adicionais','bebidas','suco','vitamina']
+                },
+                {
+                    id: 'frango',
+                    label: 'Pastéis de Frango',
+                    emoji: '🍗',
+                    image: 'https://i.ibb.co/FkdFDQzD/2dfc9cb0-6f76-11f1-b8ef-55ae3e69b86f-2.jpg',
+                    ad: { text:'Seu negócio aqui!', sub:'Destaque sua marca para milhares de clientes', cta:'Anuncie agora' },
+                    items: [
+                        { name:'Frango', desc:'Frango desfiado temperado', sizes:{M:8.50, G:14.50} },
+                        { name:'Frango com Queijo', desc:'Frango desfiado e muçarela', sizes:{M:8.90, G:15.50} },
+                        { name:'Misto de Frango', desc:'Frango, milho, azeitona e queijo minas', sizes:{M:8.90, G:15.50} },
+                        { name:'Misto de Frango com Guariroba', desc:'Frango, guariroba e temperos', sizes:{M:9.90, G:16.50} },
+                        { name:'Misto de Frango com Palmito', desc:'Frango, palmito e muçarela', sizes:{M:9.90, G:16.50} },
+                        { name:'Misto de Frango com Bacon', desc:'Frango, bacon crocante e muçarela', sizes:{M:9.90, G:16.50} },
+                        { name:'Misto de Frango com Calabresa', desc:'Frango, calabresa e muçarela', sizes:{M:9.90, G:16.50} },
+                        { name:'Misto de Frango com Catupiry', desc:'Frango e catupiry cremoso', sizes:{M:9.90, G:16.50} },
+                        { name:'Misto de Frango com Cheddar', desc:'Frango e cheddar derretido', sizes:{M:9.90, G:16.50} },
+                        { name:'Carne de Panela', desc:'Carne desfiada, cebola roxa e cream cheese Scala', sizes:{M:10.90, G:17.90} },
+                        { name:'Bagunçado', desc:'Tamanho G – Carne, frango, calabresa, muçarela, milho, Carupiry Scala, presunto, bacon e azeitona', price:30.90 },
+                        { name:'X-tudo', desc:'Hambúrguer, presunto, muçarela, bacon, tomate, cebola roxa, milho, azeitona e Carupiry Scala', sizes:{M:13.90, G:23.90} }
+                    ],
+                    extrasGroups: ['adicionais','bebidas','suco','vitamina']
+                },
+                {
+                    id: 'doces',
+                    label: 'Pastéis Doces',
+                    emoji: '🍌',
+                    image: 'https://i.ibb.co/S4xYb7HL/1782269664785-2.jpg',
+                    layout: 'list',
+                    items: [
+                        { name:'Chocolate Preto', desc:'Tamanho M – chocolate preto derretido', price:8.90 },
+                        { name:'Chocolate Branco', desc:'Tamanho M – chocolate branco cremoso', price:9.50 },
+                        { name:'Ioiô', desc:'Tamanho M – chocolate preto e chocolate branco', price:9.50 },
+                        { name:'Doce de Leite com Queijo Minas', desc:'Tamanho M – doce de leite e queijo minas', price:9.50 },
+                        { name:'Banana', desc:'Tamanho M – banana, muçarela e canela', price:9.50 },
+                        { name:'Romeu e Julieta', desc:'Tamanho M – goiabada com queijo', price:9.50 },
+                        { name:'Ouro Branco', desc:'Tamanho M – bombom ouro branco com chocolate branco', price:10.50 },
+                        { name:'Sonho de Valsa', desc:'Tamanho M – bombom sonho de valsa com chocolate preto', price:10.50 },
+                        { name:'Prestígio', desc:'Tamanho M – bombom prestígio, chocolate preto e coco ralado', price:10.50 },
+                        { name:'Oreo', desc:'Tamanho M – bolacha Oreo com chocolate branco', price:10.50 },
+                        { name:'Banoffe', desc:'Doce de leite, banana e canela', price:10.50 }
+                    ],
+                    extrasGroups: ['adicionais','bebidas','suco','vitamina']
+                },
+                {
+                    id: 'adicionais',
+                    label: 'Adicionais',
+                    emoji: '🧂',
+                    ad: { text:'Seu negócio aqui!', sub:'Destaque sua marca para milhares de clientes', cta:'Anuncie agora' },
+                    items: [
+                        { name:'Tomate', desc:'Adicional de tomate', price:3.00 },
+                        { name:'Milho', desc:'Adicional de milho', price:3.00 },
+                        { name:'Azeitona', desc:'Adicional de azeitona', price:3.00 },
+                        { name:'Palmito', desc:'Adicional de palmito', price:5.00 },
+                        { name:'Guariroba', desc:'Adicional de guariroba', price:5.00 },
+                        { name:'Queijo', desc:'Adicional de queijo', price:3.50 },
+                        { name:'Muçarela', desc:'Adicional de muçarela', price:3.50 },
+                        { name:'Presunto', desc:'Adicional de presunto', price:4.00 },
+                        { name:'Cream Cheese', desc:'Adicional de cream cheese', price:4.00 },
+                        { name:'Catupiry', desc:'Adicional de catupiry', price:4.00 },
+                        { name:'Cebola Roxa', desc:'Adicional de cebola roxa', price:3.00 },
+                        { name:'Frango', desc:'Adicional de frango desfiado', price:5.00 },
+                        { name:'Carne Moída', desc:'Adicional de carne moída', price:5.00 },
+                        { name:'Cheddar', desc:'Adicional de cheddar', price:4.00 },
+                        { name:'Bacon', desc:'Adicional de bacon crocante', price:4.00 },
+                        { name:'Provolone', desc:'Adicional de provolone', price:4.00 },
+                        { name:'Jiló', desc:'Adicional de jiló', price:3.00 },
+                        { name:'Banana', desc:'Adicional de banana', price:2.00 },
+                        { name:'Morango', desc:'Adicional de morango', price:2.00 },
+                        { name:'Chocolate Preto', desc:'Adicional de chocolate preto', price:3.00 },
+                        { name:'Chocolate Branco', desc:'Adicional de chocolate branco', price:3.50 },
+                        { name:'Bombom Ouro Branco', desc:'Adicional de bombom ouro branco', price:3.00 },
+                        { name:'Bombom Sonho de Valsa', desc:'Adicional de bombom sonho de valsa', price:3.00 },
+                        { name:'Bolacha Oreo', desc:'Adicional de bolacha Oreo', price:3.00 },
+                        { name:'Doce de Leite', desc:'Adicional de doce de leite', price:3.00 },
+                        { name:'Bombom Prestígio', desc:'Adicional de bombom prestígio', price:3.00 }
+                    ],
+                    extrasGroups: ['adicionais','bebidas','suco','vitamina']
+                },
+                {
+                    id: 'omelete',
+                    label: 'Omelete',
+                    emoji: '🍳',
+                    image: 'https://i.ibb.co/Kjpjpm1b/file-00000000aee4720e8355bfda2c14e628-2.jpg',
+                    items: [
+                        { name:'Omelete Simples', desc:'Serve 1 pessoa – ovo, carne, frango, calabresa, muçarela, milho, Catupiry/cheddar, presunto, bacon, azeitona, tomate, cebolinha e orégano', price:24.90 },
+                        { name:'Omelete Dupla', desc:'Serve 2 pessoas – ovo, carne, frango, calabresa, muçarela, milho, Catupiry/cheddar, presunto, bacon, azeitona, tomate, palmito, cebolinha e orégano', price:40.90 }
+                    ],
+                    extrasGroups: ['adicionais','bebidas','suco','vitamina']
+                },
+                {
+                    id: 'bebidas',
+                    label: 'Bebidas',
+                    emoji: '🥤',
+                    image: 'https://i.ibb.co/whsTD3Ys/59fb34f0-6f78-11f1-b8ef-55ae3e69b86f-2.jpg',
+                    ad: { text:'Seu negócio aqui!', sub:'Destaque sua marca para milhares de clientes', cta:'Anuncie agora' },
+                    items: [
+                        { name:'Refrigerante 200ml', desc:'Lata mini', price:3.00 },
+                        { name:'Refrigerante Lata', desc:'Lata 350ml', price:5.00 },
+                        { name:'Refrigerante 600ml', desc:'Garrafa PET', price:6.50 },
+                        { name:'Refrigerante 1 Litro', desc:'Garrafa PET', price:8.00 },
+                        { name:'Coca-Cola 2 Litros', desc:'Garrafa PET', price:12.50 },
+                        { name:'Fanta 2 Litros', desc:'Garrafa PET', price:10.50 },
+                        { name:'Mineiro 1,5 Litros', desc:'Garrafa PET', price:8.50 },
+                        { name:'Sprite Lemon', desc:'Lata 350ml', price:6.00 },
+                        { name:'Del Valle Lata', desc:'Lata 350ml', price:6.00 },
+                        { name:'Del Valle 1 Litro', desc:'Garrafa PET', price:10.00 },
+                        { name:'O KARO', desc:'Bebida láctea', price:3.00 },
+                        { name:'Energético Monster', desc:'Lata 473ml', price:12.00 },
+                        { name:'Água sem Gás', desc:'Garrafa 500ml', price:3.00 },
+                        { name:'Água com Gás', desc:'Garrafa 500ml', price:3.00 }
+                    ],
+                    extrasGroups: ['adicionais','bebidas','suco','vitamina']
+                },
+                {
+                    id: 'suco',
+                    label: 'Suco Natural',
+                    emoji: '🍊',
+                    image: 'https://i.ibb.co/mFYNB4t9/317b22d0-6f7b-11f1-b8ef-55ae3e69b86f-2.jpg',
+                    items: [
+                        { name:'Suco de Laranja 500ml', desc:'Natural, feito na hora', price:9.90 },
+                        { name:'Suco de Laranja 1 Litro', desc:'Natural, feito na hora', price:18.90 },
+                        { name:'Suco de Morango 500ml', desc:'Natural, feito na hora', price:9.90 },
+                        { name:'Suco de Morango 1 Litro', desc:'Natural, feito na hora', price:18.90 },
+                        { name:'Suco de Maracujá 500ml', desc:'Natural, feito na hora', price:9.90 },
+                        { name:'Suco de Maracujá 1 Litro', desc:'Natural, feito na hora', price:18.90 },
+                        { name:'Suco de Abacaxi 500ml', desc:'Natural, feito na hora', price:9.90 },
+                        { name:'Suco de Abacaxi 1 Litro', desc:'Natural, feito na hora', price:18.90 }
+                    ],
+                    extrasGroups: ['adicionais','bebidas','suco','vitamina']
+                },
+                {
+                    id: 'vitamina',
+                    label: 'Vitamina',
+                    emoji: '🥛',
+                    image: 'https://i.ibb.co/TByGgc6w/file-00000000b2dc720e8c413aa510bb34a0-2.jpg',
+                    ad: { text:'Seu negócio aqui!', sub:'Destaque sua marca para milhares de clientes', cta:'Anuncie agora' },
+                    items: [
+                        { name:'Vitamina de Açaí', desc:'500ml – com banana e granola', price:12.50 },
+                        { name:'Vitamina de Morango', desc:'500ml – morango, leite e açúcar', price:12.50 },
+                        { name:'Vitamina de Banana', desc:'500ml – banana, leite e aveia', price:12.50 },
+                        { name:'Vitamina de Abacate', desc:'500ml – abacate, leite e mel', price:12.50 },
+                        { name:'Vitamina Ioiô', desc:'500ml – chocolate preto e branco', price:13.00 },
+                        { name:'Vitamina Doce de Leite', desc:'500ml – doce de leite cremoso', price:13.00 }
+                    ],
+                    extrasGroups: ['adicionais','bebidas','suco','vitamina']
+                },
+                {
+                    id: 'coxinha',
+                    label: 'Coxinha de Araguari',
+                    emoji: '🍗',
+                    image: 'https://i.ibb.co/gLkP30sn/1782428958791-2.jpg',
+                    layout: 'list',
+                    extrasGroups: ['bebidas','suco','vitamina'],
+                    items: [
+                        { name:'Pernil', desc:'Coxinha recheada com pernil desfiado', price:8.90 },
+                        { name:'Pernil com Pimenta', desc:'Coxinha com pernil e pimenta', price:8.90 },
+                        { name:'Vegetariana', desc:'Coxinha com legumes e queijo', price:8.90 }
+                    ]
+                }
+            ];
+
+            // ============================================================
+            // 2. EXTRAIR LISTAS PARA PERSONALIZAÇÃO
+            // ============================================================
+            function getItemsBySectionId(id) {
+                const sec = menuData.find(s => s.id === id);
+                return sec ? sec.items : [];
+            }
+
+            const adicionaisList = getItemsBySectionId('adicionais');
+            const bebidasList = getItemsBySectionId('bebidas');
+            const sucoList = getItemsBySectionId('suco');
+            const vitaminaList = getItemsBySectionId('vitamina');
+
+            // ============================================================
+            // 3. REFERÊNCIAS DOM
+            // ============================================================
+            const categoriesContainer = document.getElementById('categoriesContainer');
+            const menuGrid = document.getElementById('menuGrid');
+            const toast = document.getElementById('toastMessage');
+            const cartBadge = document.getElementById('cartBadge');
+            const cartBtn = document.getElementById('cartBtn');
+            const shareBtn = document.getElementById('shareBtn');
+            const whatsappBtn = document.getElementById('whatsappBtn');
+            const searchInput = document.getElementById('searchInput');
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
+
+            const customizeModal = document.getElementById('customizeModal');
+            const orderModal = document.getElementById('orderModal');
+            const shareModal = document.getElementById('shareModal');
+            const closeCustomize = document.getElementById('closeCustomize');
+            const closeOrder = document.getElementById('closeOrder');
+            const closeShare = document.getElementById('closeShare');
+            const customizeTitle = document.getElementById('customizeTitle');
+            const customizeSummary = document.getElementById('customizeSummary');
+            const customizeSize = document.getElementById('customizeSize');
+            const adicionaisGroup = document.getElementById('adicionaisGroup');
+            const bebidasGroup = document.getElementById('bebidasGroup');
+            const sucoGroup = document.getElementById('sucoGroup');
+            const vitaminaGroup = document.getElementById('vitaminaGroup');
+            const adicionaisCheckboxes = document.getElementById('adicionaisCheckboxes');
+            const bebidasCheckboxes = document.getElementById('bebidasCheckboxes');
+            const sucoCheckboxes = document.getElementById('sucoCheckboxes');
+            const vitaminaCheckboxes = document.getElementById('vitaminaCheckboxes');
+            const addToOrderBtn = document.getElementById('addToOrderBtn');
+            const backToMenuBtn = document.getElementById('backToMenuBtn');
+            const chooseMoreBtn = document.getElementById('chooseMoreBtn');
+            const orderItemsList = document.getElementById('orderItemsList');
+            const orderTotal = document.getElementById('orderTotal');
+            const customerName = document.getElementById('customerName');
+            const paymentRadios = document.querySelectorAll('input[name="payment"]');
+            const trocoGroup = document.getElementById('trocoGroup');
+            const trocoInput = document.getElementById('troco');
+            const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
+            const enderecoGroup = document.getElementById('enderecoGroup');
+            const enderecoInput = document.getElementById('endereco');
+            const sendOrderBtn = document.getElementById('sendOrderBtn');
+
+            const copyLinkBtn = document.getElementById('copyLinkBtn');
+            const shareWhatsappBtn = document.getElementById('shareWhatsappBtn');
+
+            let toastTimer = null;
+            let cartItems = [];
+            let editingIndex = null;
+            let activeCategoryId = menuData[0].id;
+
+            // ============================================================
+            // 4. FUNÇÕES AUXILIARES
+            // ============================================================
+            function formatPrice(value) {
+                return 'R$ ' + value.toFixed(2).replace('.', ',');
+            }
+
+            function showToast(message) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 3000);
+            }
+
+            function hasSizes(item) { return item.sizes && typeof item.sizes === 'object' && !Array.isArray(item.sizes); }
+
+            function getItemPrice(item, size) {
+                if (hasSizes(item)) {
+                    return size === 'M' ? item.sizes.M : item.sizes.G;
+                }
+                return item.price;
+            }
+
+            // ============================================================
+            // 5. STATUS (ABERTO/FECHADO)
+            // ============================================================
+            function checkStoreStatus() {
+                const now = new Date();
+                const day = now.getDay();
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                const timeInMinutes = hours * 60 + minutes;
+                if (day === 0) return { open: false, message: 'Fechado' };
+                if (day === 6) {
+                    const open = 9*60, close = 16*60;
+                    if (timeInMinutes >= open && timeInMinutes < close) return { open: true, message: 'Aberto' };
+                    return { open: false, message: 'Fechado' };
+                }
+                if (day >= 1 && day <= 5) {
+                    const open = 13*60, close = 22*60;
+                    if (timeInMinutes >= open && timeInMinutes < close) return { open: true, message: 'Aberto' };
+                    return { open: false, message: 'Fechado' };
+                }
+                return { open: false, message: 'Fechado' };
+            }
+
+            function updateAllStatusBadges() {
+                const status = checkStoreStatus();
+                document.querySelectorAll('.section-status-badge').forEach(badge => {
+                    badge.className = 'section-status-badge ' + (status.open ? 'open' : 'closed');
+                    badge.innerHTML = `<span class="status-dot"></span> ${status.message}`;
+                });
+            }
+
+            // ============================================================
+            // 6. CARRINHO
+            // ============================================================
+            function updateCartBadge() {
+                const total = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+                if (total > 0) {
+                    cartBadge.textContent = total;
+                    cartBadge.className = 'cart-badge show';
+                } else {
+                    cartBadge.className = 'cart-badge hidden';
+                }
+            }
+
+            function calculateTotal() {
+                return cartItems.reduce((sum, item) => sum + item.price, 0);
+            }
+
+            // ============================================================
+            // 7. RENDERIZAÇÃO DAS TABS
+            // ============================================================
+            function renderTabs() {
+                categoriesContainer.innerHTML = '';
+                menuData.forEach(cat => {
+                    const tab = document.createElement('div');
+                    tab.className = 'category-tab' + (cat.id === activeCategoryId ? ' active' : '');
+                    tab.dataset.id = cat.id;
+                    tab.innerHTML = `<span class="emoji">${cat.emoji}</span> ${cat.label}`;
+                    tab.addEventListener('click', () => {
+                        activeCategoryId = cat.id;
+                        searchInput.value = '';
+                        clearSearchBtn.classList.remove('visible');
+                        renderTabs();
+                        renderItems();
+                        const sectionTitle = document.querySelector('.section-title');
+                        if (sectionTitle) sectionTitle.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                    categoriesContainer.appendChild(tab);
+                });
+
+                const locTab = document.createElement('div');
+                locTab.className = 'category-tab location-tab';
+                locTab.innerHTML = '📍 Localização';
+                locTab.addEventListener('click', () => {
+                    document.getElementById('localizacao').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+                categoriesContainer.appendChild(locTab);
+
+                const activeEl = categoriesContainer.querySelector('.category-tab.active');
+                if (activeEl) activeEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+
+            // ============================================================
+            // 8. ABRIR MODAL PERSONALIZAÇÃO
+            // ============================================================
+            function openCustomizeModal(itemData, size, categoryId, editIndex = null) {
+                if (orderModal.classList.contains('active')) closeOrderModal();
+
+                editingIndex = editIndex;
+                const isEdit = (editIndex !== null);
+                const itemName = itemData.name;
+                const basePrice = isEdit ? cartItems[editIndex].price : getItemPrice(itemData, size);
+                const selectedSize = isEdit ? cartItems[editIndex].size : size;
+
+                customizeTitle.textContent = isEdit ? '✏️ Editar item' : 'Personalizar';
+                customizeSummary.innerHTML = `<strong>${itemName}</strong> ${selectedSize ? ' - Tamanho ' + selectedSize : ''}`;
+                customizeSize.textContent = selectedSize || '';
+
+                const currentCategory = menuData.find(c => c.id === categoryId);
+                const allowedGroups = currentCategory ? currentCategory.extrasGroups : ['adicionais','bebidas','suco','vitamina'];
+
+                adicionaisGroup.style.display = allowedGroups.includes('adicionais') ? 'block' : 'none';
+                bebidasGroup.style.display = allowedGroups.includes('bebidas') ? 'block' : 'none';
+                sucoGroup.style.display = allowedGroups.includes('suco') ? 'block' : 'none';
+                vitaminaGroup.style.display = allowedGroups.includes('vitamina') ? 'block' : 'none';
+
+                const currentExtras = isEdit ? cartItems[editIndex].extras : { adicionais: [], bebidas: [], sucos: [], vitaminas: [] };
+
+                adicionaisCheckboxes.innerHTML = '';
+                adicionaisList.forEach(extra => {
+                    const label = document.createElement('label');
+                    const cb = document.createElement('input');
+                    cb.type = 'checkbox';
+                    cb.value = extra.name;
+                    cb.checked = currentExtras.adicionais.includes(extra.name);
+                    label.appendChild(cb);
+                    label.appendChild(document.createTextNode(` ${extra.name} (${formatPrice(extra.price)})`));
+                    adicionaisCheckboxes.appendChild(label);
+                });
+
+                bebidasCheckboxes.innerHTML = '';
+                bebidasList.forEach(extra => {
+                    const label = document.createElement('label');
+                    const cb = document.createElement('input');
+                    cb.type = 'checkbox';
+                    cb.value = extra.name;
+                    cb.checked = currentExtras.bebidas.includes(extra.name);
+                    label.appendChild(cb);
+                    label.appendChild(document.createTextNode(` ${extra.name} (${formatPrice(extra.price)})`));
+                    bebidasCheckboxes.appendChild(label);
+                });
+
+                sucoCheckboxes.innerHTML = '';
+                sucoList.forEach(extra => {
+                    const label = document.createElement('label');
+                    const cb = document.createElement('input');
+                    cb.type = 'checkbox';
+                    cb.value = extra.name;
+                    cb.checked = currentExtras.sucos.includes(extra.name);
+                    label.appendChild(cb);
+                    label.appendChild(document.createTextNode(` ${extra.name} (${formatPrice(extra.price)})`));
+                    sucoCheckboxes.appendChild(label);
+                });
+
+                vitaminaCheckboxes.innerHTML = '';
+                vitaminaList.forEach(extra => {
+                    const label = document.createElement('label');
+                    const cb = document.createElement('input');
+                    cb.type = 'checkbox';
+                    cb.value = extra.name;
+                    cb.checked = currentExtras.vitaminas.includes(extra.name);
+                    label.appendChild(cb);
+                    label.appendChild(document.createTextNode(` ${extra.name} (${formatPrice(extra.price)})`));
+                    vitaminaCheckboxes.appendChild(label);
+                });
+
+                addToOrderBtn.dataset.itemName = itemName;
+                addToOrderBtn.dataset.basePrice = basePrice;
+                addToOrderBtn.dataset.size = selectedSize || '';
+                addToOrderBtn.dataset.categoryId = categoryId;
+                addToOrderBtn.dataset.editIndex = editIndex !== null ? editIndex : '';
+
+                customizeModal.classList.add('active');
+            }
+
+            function closeCustomizeModal() { customizeModal.classList.remove('active'); }
+            function closeOrderModal() { orderModal.classList.remove('active'); }
+            function closeShareModal() { shareModal.classList.remove('active'); }
+
+            closeCustomize.addEventListener('click', closeCustomizeModal);
+            closeOrder.addEventListener('click', closeOrderModal);
+            closeShare.addEventListener('click', closeShareModal);
+            customizeModal.addEventListener('click', (e) => { if (e.target === customizeModal) closeCustomizeModal(); });
+            orderModal.addEventListener('click', (e) => { if (e.target === orderModal) closeOrderModal(); });
+            shareModal.addEventListener('click', (e) => { if (e.target === shareModal) closeShareModal(); });
+
+            backToMenuBtn.addEventListener('click', closeCustomizeModal);
+            chooseMoreBtn.addEventListener('click', closeOrderModal);
+
+            addToOrderBtn.addEventListener('click', function() {
+                const itemName = this.dataset.itemName;
+                const basePrice = parseFloat(this.dataset.basePrice);
+                const size = this.dataset.size || '';
+                const editIdx = this.dataset.editIndex !== '' ? parseInt(this.dataset.editIndex) : null;
+
+                const getCheckedValues = (container) => {
+                    const values = [];
+                    container.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => values.push(cb.value));
+                    return values;
+                };
+                const adicionais = getCheckedValues(adicionaisCheckboxes);
+                const bebidas = getCheckedValues(bebidasCheckboxes);
+                const sucos = getCheckedValues(sucoCheckboxes);
+                const vitaminas = getCheckedValues(vitaminaCheckboxes);
+
+                const calcExtraPrice = (list, itemList) => {
+                    let total = 0;
+                    list.forEach(name => {
+                        const found = itemList.find(i => i.name === name);
+                        if (found) total += found.price;
+                    });
+                    return total;
+                };
+                const extraTotal = calcExtraPrice(adicionais, adicionaisList) +
+                                    calcExtraPrice(bebidas, bebidasList) +
+                                    calcExtraPrice(sucos, sucoList) +
+                                    calcExtraPrice(vitaminas, vitaminaList);
+
+                const totalPrice = basePrice + extraTotal;
+                const extras = { adicionais, bebidas, sucos, vitaminas };
+
+                if (editIdx !== null) {
+                    cartItems[editIdx].name = itemName;
+                    cartItems[editIdx].size = size;
+                    cartItems[editIdx].price = totalPrice;
+                    cartItems[editIdx].extras = extras;
+                    showToast(`✏️ ${itemName} atualizado!`);
+                } else {
+                    cartItems.push({
+                        id: Date.now() + Math.random(),
+                        name: itemName,
+                        size: size,
+                        price: totalPrice,
+                        extras: extras,
+                        quantity: 1
+                    });
+                    showToast(`✅ ${itemName} adicionado!`);
+                }
+
+                updateCartBadge();
+                closeCustomizeModal();
+                renderOrderModal();
+                orderModal.classList.add('active');
+            });
+
+            // ============================================================
+            // 9. RENDERIZAR MODAL "MEU PEDIDO"
+            // ============================================================
+            function renderOrderModal() {
+                if (cartItems.length === 0) {
+                    orderItemsList.innerHTML = `
+                        <div class="order-empty">
+                            <span class="big-emoji">🛒</span>
+                            Seu carrinho está vazio.<br>
+                            <span style="font-size:0.8rem;color:#aaa;">Adicione itens para continuar.</span>
+                        </div>
+                    `;
+                    orderTotal.textContent = 'Total: R$ 0,00';
+                    return;
+                }
+
+                let html = '';
+                cartItems.forEach((item, index) => {
+                    const extras = [];
+                    if (item.extras.adicionais.length) extras.push('🧂 ' + item.extras.adicionais.join(', '));
+                    if (item.extras.bebidas.length) extras.push('🥤 ' + item.extras.bebidas.join(', '));
+                    if (item.extras.sucos.length) extras.push('🍊 ' + item.extras.sucos.join(', '));
+                    if (item.extras.vitaminas.length) extras.push('🥛 ' + item.extras.vitaminas.join(', '));
+                    const extrasStr = extras.length ? 
+                        '<div class="details">' + extras.map(e => `<span>${e}</span>`).join('') + '</div>' : '';
+
+                    html += `
+                        <div class="order-item-card" data-index="${index}">
+                            <div class="order-number">${index+1}</div>
+                            <div class="item-info">
+                                <div class="name">${item.name} ${item.size ? '('+item.size+')' : ''}</div>
+                                <div class="price">${formatPrice(item.price)}</div>
+                                ${extrasStr}
+                            </div>
+                            <div class="item-actions">
+                                <button class="edit-btn" data-index="${index}" title="Editar">✏️</button>
+                                <button class="delete-btn" data-index="${index}" title="Remover">🗑️</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                orderItemsList.innerHTML = html;
+
+                const total = calculateTotal();
+                orderTotal.textContent = 'Total: ' + formatPrice(total);
+
+                orderItemsList.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const idx = parseInt(this.dataset.index);
+                        const item = cartItems[idx];
+                        let foundItem = null;
+                        let foundCategory = null;
+                        let foundSize = item.size;
+                        for (let cat of menuData) {
+                            const i = cat.items.find(it => it.name === item.name);
+                            if (i) {
+                                foundItem = i;
+                                foundCategory = cat.id;
+                                break;
+                            }
+                        }
+                        if (foundItem) {
+                            closeOrderModal();
+                            openCustomizeModal(foundItem, foundSize, foundCategory, idx);
+                        } else {
+                            showToast('Erro ao editar item.');
+                        }
+                    });
+                });
+
+                orderItemsList.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const idx = parseInt(this.dataset.index);
+                        cartItems.splice(idx, 1);
+                        updateCartBadge();
+                        renderOrderModal();
+                        if (cartItems.length === 0) showToast('🛒 Carrinho vazio!');
+                        else showToast('🗑️ Item removido!');
+                    });
+                });
+            }
+
+            cartBtn.addEventListener('click', () => {
+                renderOrderModal();
+                orderModal.classList.add('active');
+            });
+
+            // ============================================================
+            // 10. RENDERIZAR ITENS (com suporte à pesquisa)
+            // ============================================================
+            function renderItems(filterText = '') {
+                // Se houver texto de pesquisa, buscamos em todos os itens de todas as categorias
+                // e exibimos os resultados sem as seções, apenas os cards.
+                // Caso contrário, exibimos a categoria ativa normalmente.
+
+                // Limpa o grid
+                menuGrid.innerHTML = '';
+
+                if (filterText.trim() === '') {
+                    // Modo normal: exibe a categoria ativa
+                    const category = menuData.find(c => c.id === activeCategoryId);
+                    if (!category) return;
+
+                    // Aplica classe de layout
+                    if (category.layout === 'list') {
+                        menuGrid.classList.add('list-layout');
+                    } else {
+                        menuGrid.classList.remove('list-layout');
+                    }
+
+                    // Título
+                    const title = document.createElement('h2');
+                    title.className = 'section-title';
+                    title.innerHTML = `<span class="title-emoji">${category.emoji}</span> ${category.label}`;
+                    const badge = document.createElement('span');
+                    badge.className = 'section-status-badge';
+                    badge.innerHTML = `<span class="status-dot"></span> Carregando...`;
+                    title.appendChild(badge);
+                    menuGrid.appendChild(title);
+
+                    // Imagem
+                    if (category.image) {
+                        const imgContainer = document.createElement('div');
+                        imgContainer.className = 'section-image';
+                        const img = document.createElement('img');
+                        img.src = category.image;
+                        img.alt = category.label;
+                        img.loading = 'lazy';
+                        imgContainer.appendChild(img);
+                        menuGrid.appendChild(imgContainer);
+                    }
+
+                    // Itens
+                    category.items.forEach(item => {
+                        const card = createItemCard(item, category.id);
+                        menuGrid.appendChild(card);
+                    });
+
+                    // Anúncio
+                    if (category.ad) {
+                        const adLink = document.createElement('a');
+                        adLink.className = 'ad-space';
+                        adLink.href = 'https://wa.me/5534991058994?text=Olá!%20Gostaria%20de%20anunciar%20no%20cardápio%20da%20Sabor%20de%20Udi!';
+                        adLink.target = '_blank';
+                        adLink.setAttribute('aria-label', 'Anuncie aqui');
+                        const adContent = document.createElement('div');
+                        adContent.className = 'ad-content';
+                        adContent.innerHTML = `
+                            <div class="ad-title">${category.ad.text}</div>
+                            <div class="ad-sub">${category.ad.sub}</div>
+                            <span class="ad-cta">${category.ad.cta}</span>
+                        `;
+                        adLink.appendChild(adContent);
+                        menuGrid.appendChild(adLink);
+                    }
+
+                    updateAllStatusBadges();
+                } else {
+                    // Modo pesquisa: mostra todos os itens que correspondem ao filtro
+                    // Remove a classe list-layout para permitir grid normal
+                    menuGrid.classList.remove('list-layout');
+
+                    const term = filterText.toLowerCase().trim();
+                    let found = false;
+
+                    // Percorre todas as categorias
+                    menuData.forEach(category => {
+                        const matchedItems = category.items.filter(item => {
+                            const nameMatch = item.name.toLowerCase().includes(term);
+                            const descMatch = item.desc.toLowerCase().includes(term);
+                            return nameMatch || descMatch;
+                        });
+
+                        if (matchedItems.length > 0) {
+                            found = true;
+                            // Título da categoria (oculto, só para referência)
+                            // Não exibimos título, apenas os cards
+                            matchedItems.forEach(item => {
+                                const card = createItemCard(item, category.id);
+                                menuGrid.appendChild(card);
+                            });
+                        }
+                    });
+
+                    if (!found) {
+                        // Nenhum item encontrado
+                        const noResult = document.createElement('div');
+                        noResult.className = 'no-results';
+                        noResult.innerHTML = `
+                            <span style="font-size:2rem;display:block;margin-bottom:8px;">🔍</span>
+                            Nenhum item encontrado para <strong>"${filterText}"</strong>.<br>
+                            <span style="font-size:0.8rem;color:#aaa;">Tente buscar por outro nome ou descrição.</span>
+                        `;
+                        menuGrid.appendChild(noResult);
+                    }
+                }
+            }
+
+            // Função auxiliar para criar um card de item
+            function createItemCard(item, categoryId) {
+                const card = document.createElement('div');
+                card.className = 'menu-card';
+
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'item-name';
+                nameDiv.textContent = item.name;
+                card.appendChild(nameDiv);
+
+                const descDiv = document.createElement('div');
+                descDiv.className = 'item-desc';
+                descDiv.textContent = item.desc;
+                card.appendChild(descDiv);
+
+                const footer = document.createElement('div');
+                footer.className = 'item-footer';
+
+                if (hasSizes(item)) {
+                    const sizes = item.sizes;
+                    const sizeContainer = document.createElement('div');
+                    sizeContainer.className = 'size-buttons';
+
+                    if (sizes.M !== undefined) {
+                        const btnM = document.createElement('button');
+                        btnM.className = 'btn-size';
+                        btnM.innerHTML = `<span class="size-label">M</span><span class="size-price">${formatPrice(sizes.M)}</span>`;
+                        btnM.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            openCustomizeModal(item, 'M', categoryId);
+                        });
+                        sizeContainer.appendChild(btnM);
+                    }
+
+                    if (sizes.G !== undefined) {
+                        const btnG = document.createElement('button');
+                        btnG.className = 'btn-size';
+                        btnG.innerHTML = `<span class="size-label">G</span><span class="size-price">${formatPrice(sizes.G)}</span>`;
+                        btnG.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            openCustomizeModal(item, 'G', categoryId);
+                        });
+                        sizeContainer.appendChild(btnG);
+                    }
+
+                    footer.appendChild(sizeContainer);
+                } else {
+                    const priceSpan = document.createElement('span');
+                    priceSpan.className = 'item-price-badge';
+                    priceSpan.textContent = formatPrice(item.price);
+                    footer.appendChild(priceSpan);
+
+                    const addBtn = document.createElement('button');
+                    addBtn.className = 'btn-add';
+                    addBtn.textContent = '+';
+                    addBtn.setAttribute('aria-label', `Adicionar ${item.name}`);
+                    addBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openCustomizeModal(item, null, categoryId);
+                    });
+                    footer.appendChild(addBtn);
+                }
+
+                card.appendChild(footer);
+                return card;
+            }
+
+            // ============================================================
+            // 11. EVENTOS DA PESQUISA
+            // ============================================================
+            searchInput.addEventListener('input', function() {
+                const value = this.value;
+                if (value.trim() !== '') {
+                    clearSearchBtn.classList.add('visible');
+                } else {
+                    clearSearchBtn.classList.remove('visible');
+                }
+                renderItems(value);
+            });
+
+            clearSearchBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                this.classList.remove('visible');
+                renderItems('');
+                // Atualiza a categoria ativa (re-renderiza a categoria atual)
+                renderItems();
+            });
+
+            // ============================================================
+            // 12. ENVIO DO PEDIDO (via WhatsApp)
+            // ============================================================
+            sendOrderBtn.addEventListener('click', function() {
+                const name = customerName.value.trim();
+                if (!name) {
+                    showToast('⚠️ Por favor, informe seu nome.');
+                    customerName.focus();
+                    return;
+                }
+
+                let payment = null;
+                paymentRadios.forEach(r => { if (r.checked) payment = r.value; });
+                if (!payment) {
+                    showToast('⚠️ Selecione uma forma de pagamento.');
+                    return;
+                }
+                let troco = '';
+                if (payment === 'Dinheiro') {
+                    troco = trocoInput.value.trim();
+                    if (!troco) {
+                        showToast('⚠️ Informe o valor para troco.');
+                        trocoInput.focus();
+                        return;
+                    }
+                }
+
+                let delivery = null;
+                deliveryRadios.forEach(r => { if (r.checked) delivery = r.value; });
+                if (!delivery) {
+                    showToast('⚠️ Selecione a forma de entrega.');
+                    return;
+                }
+                let endereco = '';
+                if (delivery === 'Delivery') {
+                    endereco = enderecoInput.value.trim();
+                    if (!endereco) {
+                        showToast('⚠️ Informe seu endereço para delivery.');
+                        enderecoInput.focus();
+                        return;
+                    }
+                }
+
+                if (cartItems.length === 0) {
+                    showToast('⚠️ Seu carrinho está vazio.');
+                    return;
+                }
+
+                let msg = `🍽️ *PEDIDO - SABOR DE UDI* 🍽️\n\n`;
+                msg += `*Cliente:* ${name}\n`;
+                cartItems.forEach((item, idx) => {
+                    const extras = [];
+                    if (item.extras.adicionais.length) extras.push('Adicionais: ' + item.extras.adicionais.join(', '));
+                    if (item.extras.bebidas.length) extras.push('Bebidas: ' + item.extras.bebidas.join(', '));
+                    if (item.extras.sucos.length) extras.push('Sucos: ' + item.extras.sucos.join(', '));
+                    if (item.extras.vitaminas.length) extras.push('Vitaminas: ' + item.extras.vitaminas.join(', '));
+                    msg += `\n${idx+1} - ${item.name} ${item.size ? '('+item.size+')' : ''} - ${formatPrice(item.price)}`;
+                    if (extras.length) msg += `\n   Extras: ${extras.join(' | ')}`;
+                });
+                const total = cartItems.reduce((sum, i) => sum + i.price, 0);
+                msg += `\n\n*Total: ${formatPrice(total)}*`;
+                msg += `\n\n*Pagamento:* ${payment} ${payment === 'Dinheiro' ? ' (Troco para: '+troco+')' : ''}`;
+                msg += `\n*Entrega:* ${delivery} ${delivery === 'Delivery' ? '\n*Endereço:* '+endereco : ''}`;
+
+                const encoded = encodeURIComponent(msg);
+                const url = `https://wa.me/5534997801663?text=${encoded}`;
+                window.open(url, '_blank');
+
+                cartItems = [];
+                updateCartBadge();
+                closeOrderModal();
+                showToast('📤 Pedido enviado! Aguarde o contato.');
+            });
+
+            // ============================================================
+            // 13. COMPARTILHAMENTO
+            // ============================================================
+            shareBtn.addEventListener('click', () => {
+                shareModal.classList.add('active');
+            });
+
+            copyLinkBtn.addEventListener('click', function() {
+                const dummy = document.createElement('input');
+                dummy.value = window.location.href;
+                document.body.appendChild(dummy);
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                showToast('📋 Link copiado!');
+                closeShareModal();
+            });
+
+            shareWhatsappBtn.addEventListener('click', function() {
+                const msg = 'Olá! Descobri o cardápio da Sabor de Udi e é maravilhoso! Dá uma olhada: ' + window.location.href;
+                const url = 'https://wa.me/?text=' + encodeURIComponent(msg);
+                window.open(url, '_blank');
+                closeShareModal();
+            });
+
+            // ============================================================
+            // 14. CAMPOS CONDICIONAIS
+            // ============================================================
+            paymentRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'Dinheiro') {
+                        trocoGroup.style.display = 'block';
+                        trocoInput.required = true;
+                    } else {
+                        trocoGroup.style.display = 'none';
+                        trocoInput.required = false;
+                    }
+                });
+            });
+
+            deliveryRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'Delivery') {
+                        enderecoGroup.style.display = 'block';
+                        enderecoInput.required = true;
+                    } else {
+                        enderecoGroup.style.display = 'none';
+                        enderecoInput.required = false;
+                    }
+                });
+            });
+
+            // ============================================================
+            // 15. INICIALIZAÇÃO
+            // ============================================================
+            renderTabs();
+            renderItems();
+            updateCartBadge();
+            setInterval(updateAllStatusBadges, 60000);
+            setTimeout(() => showToast('🍽️ Escolha sua categoria!'), 600);
+        })();
+    </script>
+</body>
+</html>
