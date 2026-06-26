@@ -41,6 +41,42 @@
             position: relative;
         }
 
+        /* ===== SPLASH SCREEN ===== */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--yellow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+        #splash-screen.fade-out {
+            opacity: 0;
+        }
+        #splash-screen.hidden {
+            display: none;
+        }
+        .splash-image {
+            max-width: 80%;
+            max-height: 70vh;
+            object-fit: contain;
+            animation: slideUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
         /* ===== HEADER ===== */
         .hero-header {
             display: flex;
@@ -263,7 +299,6 @@
             margin-top: 6px;
             padding-bottom: 20px;
         }
-        /* Layout em lista (uma coluna) para seções específicas */
         .menu-grid.list-layout {
             grid-template-columns: 1fr;
         }
@@ -1037,6 +1072,11 @@
 </head>
 <body>
 
+    <!-- ===== SPLASH SCREEN ===== -->
+    <div id="splash-screen">
+        <img src="https://i.ibb.co/CSszy9G/1000270662-removebg-preview.png" alt="Sabor de Udi" class="splash-image">
+    </div>
+
     <div class="app-container">
         <header class="hero-header">
             <div class="logo-circle">
@@ -1062,7 +1102,7 @@
 
         <main class="menu-grid" id="menuGrid"></main>
 
-        <!-- ===== SEÇÃO LOCALIZAÇÃO (aparece dentro do grid) ===== -->
+        <!-- ===== SEÇÃO LOCALIZAÇÃO ===== -->
         <div id="localizacao" class="localizacao-section" style="grid-column: 1 / -1;">
             <h3>📍 Localização</h3>
             <div class="endereco-destaque">
@@ -1196,6 +1236,24 @@
     </div>
 
     <script>
+        // ============================================================
+        // SPLASH SCREEN - Remove após 3 segundos com fade out
+        // ============================================================
+        (function() {
+            const splash = document.getElementById('splash-screen');
+            if (splash) {
+                setTimeout(() => {
+                    splash.classList.add('fade-out');
+                    setTimeout(() => {
+                        splash.classList.add('hidden');
+                    }, 600);
+                }, 3000);
+            }
+        })();
+
+        // ============================================================
+        // CARDÁPIO
+        // ============================================================
         (function() {
             // ============================================================
             // 1. DADOS DO CARDÁPIO
@@ -1809,26 +1867,18 @@
             // 10. RENDERIZAR ITENS (com suporte à pesquisa)
             // ============================================================
             function renderItems(filterText = '') {
-                // Se houver texto de pesquisa, buscamos em todos os itens de todas as categorias
-                // e exibimos os resultados sem as seções, apenas os cards.
-                // Caso contrário, exibimos a categoria ativa normalmente.
-
-                // Limpa o grid
                 menuGrid.innerHTML = '';
 
                 if (filterText.trim() === '') {
-                    // Modo normal: exibe a categoria ativa
                     const category = menuData.find(c => c.id === activeCategoryId);
                     if (!category) return;
 
-                    // Aplica classe de layout
                     if (category.layout === 'list') {
                         menuGrid.classList.add('list-layout');
                     } else {
                         menuGrid.classList.remove('list-layout');
                     }
 
-                    // Título
                     const title = document.createElement('h2');
                     title.className = 'section-title';
                     title.innerHTML = `<span class="title-emoji">${category.emoji}</span> ${category.label}`;
@@ -1838,7 +1888,6 @@
                     title.appendChild(badge);
                     menuGrid.appendChild(title);
 
-                    // Imagem
                     if (category.image) {
                         const imgContainer = document.createElement('div');
                         imgContainer.className = 'section-image';
@@ -1850,13 +1899,11 @@
                         menuGrid.appendChild(imgContainer);
                     }
 
-                    // Itens
                     category.items.forEach(item => {
                         const card = createItemCard(item, category.id);
                         menuGrid.appendChild(card);
                     });
 
-                    // Anúncio
                     if (category.ad) {
                         const adLink = document.createElement('a');
                         adLink.className = 'ad-space';
@@ -1876,14 +1923,11 @@
 
                     updateAllStatusBadges();
                 } else {
-                    // Modo pesquisa: mostra todos os itens que correspondem ao filtro
-                    // Remove a classe list-layout para permitir grid normal
                     menuGrid.classList.remove('list-layout');
 
                     const term = filterText.toLowerCase().trim();
                     let found = false;
 
-                    // Percorre todas as categorias
                     menuData.forEach(category => {
                         const matchedItems = category.items.filter(item => {
                             const nameMatch = item.name.toLowerCase().includes(term);
@@ -1893,8 +1937,6 @@
 
                         if (matchedItems.length > 0) {
                             found = true;
-                            // Título da categoria (oculto, só para referência)
-                            // Não exibimos título, apenas os cards
                             matchedItems.forEach(item => {
                                 const card = createItemCard(item, category.id);
                                 menuGrid.appendChild(card);
@@ -1903,7 +1945,6 @@
                     });
 
                     if (!found) {
-                        // Nenhum item encontrado
                         const noResult = document.createElement('div');
                         noResult.className = 'no-results';
                         noResult.innerHTML = `
@@ -1916,7 +1957,6 @@
                 }
             }
 
-            // Função auxiliar para criar um card de item
             function createItemCard(item, categoryId) {
                 const card = document.createElement('div');
                 card.className = 'menu-card';
@@ -2000,8 +2040,6 @@
                 searchInput.value = '';
                 this.classList.remove('visible');
                 renderItems('');
-                // Atualiza a categoria ativa (re-renderiza a categoria atual)
-                renderItems();
             });
 
             // ============================================================
@@ -2137,7 +2175,7 @@
             renderItems();
             updateCartBadge();
             setInterval(updateAllStatusBadges, 60000);
-            setTimeout(() => showToast('🍽️ Escolha sua categoria!'), 600);
+            // O toast "Escolha sua categoria!" foi removido conforme solicitado.
         })();
     </script>
 </body>
